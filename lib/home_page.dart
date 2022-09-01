@@ -163,12 +163,10 @@ class _HomePageState extends State<HomePage>  {
                               child: Row(
                                 children: [
                                   Container(
-                                      width: 100,
-                                      height: 100,
-                                      child: Image(
-                                          fit: BoxFit.contain,
-                                          image: AssetImage(
-                                              '${preview}')),
+                                      width: 70,
+                                      height: 70,
+                                      child: Image.asset('${preview[index]}',
+                                          fit: BoxFit.contain,)
                                   ),
                                   SizedBox(
                                     width: 10,
@@ -185,11 +183,13 @@ class _HomePageState extends State<HomePage>  {
                                       SizedBox(
                                         height: 5,),
 
-                                       Text(datavalue[index]['movie-description'],
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.w400,),),
+                                       Container(
+                                         child: Text(datavalue[index]['movie-description'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.w400,),),
+                                       ),
                                     ],
                                   ),
                                 ],
@@ -227,14 +227,15 @@ class _HomePageState extends State<HomePage>  {
 }
 
 List<String> preview = <String>[
-  'assets/images/beast.jpg',
   'assets/images/bullet-train.jpg',
-  'assets/images/dragonball.jpg',
-  'assets/images/hammer.jpg',
-  'assets/images/hey-you.jpg',
-  'assets/images/obaram.jpg',
-  'assets/images/rubicon.jpg',
   'assets/images/setup2.jpg',
   'assets/images/the-invitation.jpg',
-  'assets/images/thor.jpg'
+  'assets/images/obaram.jpg',
+  'assets/images/dragonball.jpg',
+  'assets/images/thor.jpg',
+  'assets/images/hey-you.jpg',
+  'assets/images/beast.jpg',
+  'assets/images/rubicon.jpg',
+  'assets/images/hammer.jpg',
+
 ];
