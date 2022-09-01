@@ -162,12 +162,14 @@ class _HomePageState extends State<HomePage>  {
                             child: Container(
                               child: Row(
                                 children: [
-                                  // Container(
-                                  //     width: 130,
-                                  //     height: 130,
-                                  //     child: Image.network('${futureFiles}'),
-                                  // ),
-
+                                  Container(
+                                      width: 100,
+                                      height: 100,
+                                      child: Image(
+                                          fit: BoxFit.contain,
+                                          image: AssetImage(
+                                              '${preview}')),
+                                  ),
                                   SizedBox(
                                     width: 10,
                                   ),
