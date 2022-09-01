@@ -163,12 +163,10 @@ class _HomePageState extends State<HomePage>  {
                               child: Row(
                                 children: [
                                   Container(
-                                      width: 100,
-                                      height: 100,
-                                      child: Image(
-                                          fit: BoxFit.contain,
-                                          image: AssetImage(
-                                              '${preview}')),
+                                      width: 70,
+                                      height: 70,
+                                      child: Image.asset('$preview',
+                                          fit: BoxFit.contain,)
                                   ),
                                   SizedBox(
                                     width: 10,
@@ -185,11 +183,13 @@ class _HomePageState extends State<HomePage>  {
                                       SizedBox(
                                         height: 5,),
 
-                                       Text(datavalue[index]['movie-description'],
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.w400,),),
+                                       Container(
+                                         child: Text(datavalue[index]['movie-description'],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.w400,),),
+                                       ),
                                     ],
                                   ),
                                 ],
