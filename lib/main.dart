@@ -1,11 +1,15 @@
 
+import 'package:cinema_app/pages/onboarding/splashScreen.dart';
+import 'package:cinema_app/provider.dart';
+
+
+
+import 'package:cinema_app/provider2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
-import 'login_page.dart';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +27,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false,
+    return  MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Counterfile()),
+        ChangeNotifierProvider(create: (_) => Provider2()),
+      ],
+      child: MaterialApp(
+        home: splashScreeen(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
