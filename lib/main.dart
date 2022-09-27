@@ -3,8 +3,6 @@ import 'package:cinema_app/pages/onboarding/splashScreen.dart';
 import 'package:cinema_app/provider.dart';
 
 
-
-import 'package:cinema_app/provider2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +28,6 @@ class _MyAppState extends State<MyApp> {
     return  MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Counterfile()),
-        ChangeNotifierProvider(create: (_) => Provider2()),
       ],
       child: MaterialApp(
         home: splashScreeen(),

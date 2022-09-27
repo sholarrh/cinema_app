@@ -79,7 +79,17 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.only(left: 18, right: 18),
             child: Column(
               children: [
-                SizedBox(height: 100,),
+                SizedBox(height: 30,),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back,
+                      color: white,)),
+                ),
+                SizedBox(height: 70,),
                  Align(
                    alignment: Alignment.topLeft,
                    child: MyText(

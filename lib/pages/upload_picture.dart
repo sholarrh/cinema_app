@@ -1,15 +1,17 @@
-import 'package:cinema_app/pages/upload_video_page.dart';
+
 import 'package:cinema_app/provider.dart';
 import 'package:cinema_app/utils/app_color.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
+
 import '../firebase/firebase_api.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/my_text.dart';
+import '../widgets/reusuable_text_form_field.dart';
 
 
 class upLoadImage extends StatefulWidget {
@@ -21,7 +23,9 @@ class upLoadImage extends StatefulWidget {
 
 class _upLoadImageState extends State<upLoadImage> {
 
-
+  bool isLoading = false;
+  final TextEditingController _titleTextController = TextEditingController();
+  final TextEditingController _descriptionTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +34,11 @@ class _upLoadImageState extends State<upLoadImage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black26,
+        backgroundColor: mainBlue,
         automaticallyImplyLeading: false,
-        title: Text('Add New Picture',
+        title: Text('Add New Video',
           style: TextStyle(
-            color: Colors.white,
+            color: mainred,
           ),),
         centerTitle: true,
       ),
@@ -48,9 +52,11 @@ class _upLoadImageState extends State<upLoadImage> {
 
                   SizedBox(height: 20,),
                   MyButton(
-                    color: white,
-                    child: MyText ('Select File'),
-                    // icon: Icons.attach_file,
+                    height: 40,
+                    icon: Icons.attach_file,
+                    color: mainred,
+                    child: MyText ('Select File',
+                    color: white,),
                     onTap: data.selectFile,
                   ),
 
@@ -59,15 +65,42 @@ class _upLoadImageState extends State<upLoadImage> {
                     fileName,
                     style: TextStyle(fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.green),
+                        color: mainBlue),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 40),
+                  data.task != null ? buildUploadStatus(data.task!) : Container(
+                    color: white,
+                  ),
+                  SizedBox(height: 40),
+
+                  InputField(
+                    inputController: _titleTextController,
+                    isPassword: false,
+                    hintText: 'Movie Description',
+                    hasSuffixIcon: false,
+                    keyBoardType: TextInputType.emailAddress,
+                    prefixIcon: Icon(Icons.person_outline),
+                  ),
+
+                  SizedBox(height: 40,),
+
+                  InputField(
+                    inputController: _descriptionTextController,
+                    isPassword: false,
+                    hintText: 'Movie Description',
+                    hasSuffixIcon: false,
+                    keyBoardType: TextInputType.text,
+                    prefixIcon: Icon(Icons.person_outline),
+                  ),
+
+                  SizedBox(height: 150,),
 
                   MyButton(
-                    color: white,
+                    color: mainred,
+                      height: 50,
                       child: MyText (
                         'Upload File',),
-                    //icon: Icons.cloud_upload_outlined,
+                    icon: Icons.cloud_upload_outlined,
                     onTap: () async {
                       if (data.file == null) return;
 
@@ -84,18 +117,31 @@ class _upLoadImageState extends State<upLoadImage> {
 
                       print('Download-Link: ${data.imageUrl}');
 
-                      if (data.imageUrl != null)
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => upLoadVideo()));
+                      if (data.imageUrl != null) {
+                        try {
+                          await FirebaseFirestore.instance.collection('Users')
+                              .doc(_titleTextController.text)
+                              .set({
+                            'movie-title': _titleTextController.text,
+                            'movie-description': _descriptionTextController
+                                .text,
+                            'urlDownload': data.imageUrl,
+                          })
+                              .then((value) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.pop(context);
+                          });
+                        } catch (e, s) {
+                          print(e);
+                          print(s);
+                        }
+                      }
                     }
                   ),
 
-                  SizedBox(height: 20),
-                  data.task != null ? buildUploadStatus(data.task!) : Container(
-                    color: Colors.white,
-                  ),
+
                 ],
               ),
             )
@@ -103,25 +149,6 @@ class _upLoadImageState extends State<upLoadImage> {
       ),
     );
   }
-
-
-
-  // Future uploadFile() async {
-  //   if (file == null) return;
-  //
-  //   final fileName = basename(file!.path);
-  //   final destination = 'files/$fileName';
-  //
-  //   task = FirebaseApi.uploadFile(destination, file!);
-  //   setState(() {});
-  //
-  //   if (task == null) return;
-  //
-  //   final snapshot = await task!.whenComplete(() {});
-  //   final urlDownload = await snapshot.ref.getDownloadURL();
-  //   print('Download-Link: $urlDownload');
-  //
-  // }
 
   Widget buildUploadStatus(UploadTask task) =>
       StreamBuilder<TaskSnapshot>(
@@ -136,7 +163,7 @@ class _upLoadImageState extends State<upLoadImage> {
               '$percentage %',
               style: TextStyle(fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.green,),
+                color: mainBlue,),
             );
           } else {
             return Container();

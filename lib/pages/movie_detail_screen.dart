@@ -1,6 +1,6 @@
 
 
-import 'package:cinema_app/provider2.dart';
+import 'package:cinema_app/provider.dart';
 import 'package:cinema_app/utils/app_color.dart';
 import 'package:cinema_app/widgets/my_text.dart';
 import 'package:flutter/material.dart';
@@ -30,61 +30,57 @@ class _movieDetailScreenState extends State<movieDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<Provider2>(context);
+    var data = Provider.of<Counterfile>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: mainBlue,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MyText(widget.title,
-              color: mainred,
-              fontSize: 27,
-              fontWeight: FontWeight.w600,
+            SizedBox(
+              width: 1,
             ),
 
-            Align(
-              alignment: Alignment.topRight,
-              child: InkWell(
-                child: PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                        child: MyButton(
-                          color: mainred,
-                          onTap: () async {
-                            try {
-                              await data.movie.doc(widget.title)
-                                  .delete()
-                                  .then((value) {
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (ctx) => HomePage()));
-                              });
-                            } catch (e, s) {
-                              print(e);
-                              print(s);
-                            }
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            child: MyText(
-                              'Delete',
-                              color: white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        )
-                    ),
-                  ],
-                ),
+               MyText(widget.title,
+                color: mainred,
+                fontSize: 27,
+                fontWeight: FontWeight.w600,
+              ),
+
+            InkWell(
+              child: PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: MyButton(
+                        color: mainred,
+                        onTap: () async {
+                          try {
+                            await data.movie.doc(widget.title)
+                                .delete()
+                                .then((value) {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (ctx) => HomePage()));
+                            });
+                          } catch (e, s) {
+                            print(e);
+                            print(s);
+                          }
+                        },
+                        child: MyText(
+                          'Delete',
+                          color: white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                  ),
+                ],
               ),
             )
           ],
         ),
-
-        centerTitle: true,
       ),
       backgroundColor: backGround,
       body: SingleChildScrollView(

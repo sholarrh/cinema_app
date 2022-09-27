@@ -1,6 +1,6 @@
 
 
-import 'package:cinema_app/provider2.dart';
+import 'package:cinema_app/provider.dart';
 import 'package:cinema_app/widgets/movie_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -20,7 +20,7 @@ class _firebase1State extends State<firebase1> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<Provider2>(context);
+    var data = Provider.of<Counterfile>(context);
 
     return Column(
       mainAxisSize: MainAxisSize.max,

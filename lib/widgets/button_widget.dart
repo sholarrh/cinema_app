@@ -18,10 +18,12 @@ class MyButton extends StatelessWidget {
         this.boxBorder,
         this.boxShadow,
         this.shape,
+        this.icon,
         this.color})
       : super(key: key);
 
   final Widget child;
+  final IconData? icon;
   final Function()? onTap;
   final Color? color;
   final bool? hasDoubleShadow;
