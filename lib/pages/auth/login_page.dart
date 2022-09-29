@@ -103,40 +103,44 @@ class _LoginPageState extends State<LoginPage> {
 
                       SizedBox(height: 150,),
 
-                      MyButton(
+                       MyButton(
                         height: 50,
                         color: mainred,
-                          onTap: (){
+                          onTap: () async {
                             if (_formkey.currentState!.validate())
-
-                            setState(() {
-                              isLoading = true;
-                              isLoading == true ? CircularProgressIndicator(
-                                color: mainBlue,
-                              ) : null;
-                            });
-                            {
-                              FirebaseAuth.instance.signInWithEmailAndPassword(
+                            {isLoading = true;
+                            setState(() {});
+                            try {
+                              await FirebaseAuth.instance.signInWithEmailAndPassword(
                                   email: _emailTextController.text,
                                   password: _passwordTextController.text).then((value)
                               {
-                                isLoading = false;
-                                setState(() {
-                                });
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) => HomePage()));
                                 print('signed in');
                               }).onError((error, stackTrace) {
                                 print('error ${error.toString()}');
                               });
+                            }catch(e,s){
+                              print(e);
+                              print(s);
+                            }
+                            Future.delayed(Duration(seconds: 5)).then((value){
+                              isLoading = false;
+                              setState(() {
+                              });});
                             }
                           },
-                          child: MyText(
+                          child: isLoading == false ? MyText(
                             'Log In',
                             color: white,
                             fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                          ),
+                            fontSize: 20,)
+                          : Center(
+                            child: CircularProgressIndicator(
+                              color: mainBlue,
+                    ),
+                ),
                       ),
                     ],
                   ),

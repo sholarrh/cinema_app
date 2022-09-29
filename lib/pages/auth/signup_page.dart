@@ -167,16 +167,19 @@ class _SignUpState extends State<SignUp> {
                   child: MyButton(
                     height: 50,
                       color: mainred,
-                    child: MyText('Sign Up',
+                    child: isLoading == false ? MyText('Sign Up',
                       color: white,
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
+                    ):  Center(
+                      child: CircularProgressIndicator(
+                        color: mainBlue,
+                      ),
                     ),
                       onTap:  () async {
-                        if (_formkey.currentState!.validate())
+                        if (_formkey.currentState!.validate()){
                     isLoading = true;
                     setState(() {
-                      isLoading ? const CircularProgressIndicator() : null;
                     });
                    try {
                      await FirebaseAuth.instance
@@ -194,6 +197,11 @@ class _SignUpState extends State<SignUp> {
                      print(e);
                      print(s);
                    }
+                   Future.delayed(Duration(seconds: 5)).then((value){
+                          isLoading = false;
+                          setState(() {
+                          });});
+                        }
                   }),
                 ),
               ],
