@@ -3,7 +3,11 @@ import 'package:cinema_app/widgets/my_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../provider.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/reusuable_text_form_field.dart';
 
@@ -18,6 +22,8 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
   bool isLoading = false;
+  String? fullname;
+
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _fullnameTextController = TextEditingController();
@@ -71,6 +77,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    // var data = Provider.of<Counterfile>(context);
     return Scaffold(
       backgroundColor: backGround,
       body: SingleChildScrollView(
@@ -181,6 +188,16 @@ class _SignUpState extends State<SignUp> {
                     isLoading = true;
                     setState(() {
                     });
+                    final storage = await SharedPreferences.getInstance();
+                    await storage.setString('fullname', _fullnameTextController.text);
+                    setState(() {
+                    });
+
+                    Duration waitTime = Duration(seconds: 2);
+                    Future.delayed(waitTime, (){
+                      isLoading = false;
+                      setState(() {});
+                    });
                    try {
                      await FirebaseAuth.instance
                          .createUserWithEmailAndPassword(
@@ -197,10 +214,6 @@ class _SignUpState extends State<SignUp> {
                      print(e);
                      print(s);
                    }
-                   Future.delayed(Duration(seconds: 5)).then((value){
-                          isLoading = false;
-                          setState(() {
-                          });});
                         }
                   }),
                 ),

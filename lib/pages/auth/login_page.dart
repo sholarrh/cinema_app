@@ -3,8 +3,10 @@ import 'package:cinema_app/widgets/button_widget.dart';
 import 'package:cinema_app/widgets/my_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
+import '../../provider.dart';
 import '../../utils/app_color.dart';
 import '../../widgets/reusuable_text_form_field.dart';
 import '../home_page.dart';
@@ -43,7 +45,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero).then((value) {
+      var data = Provider.of<Counterfile>(context, listen: false);
+      data.sharedPreferences();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+   var data = Provider.of<Counterfile>(context);
     return Scaffold(
       backgroundColor: Colors.black26,
       body:  SingleChildScrollView(
@@ -58,8 +71,6 @@ class _LoginPageState extends State<LoginPage> {
                   child:
                   Image(image: AssetImage('assets/images/OOPL-Cinemas-logo-white-website-logo-web.png')),
                 ),
-
-
 
                 Padding(
                   padding: const EdgeInsets.only(top: 80.0),
@@ -107,9 +118,15 @@ class _LoginPageState extends State<LoginPage> {
                         height: 50,
                         color: mainred,
                           onTap: () async {
-                            if (_formkey.currentState!.validate())
-                            {isLoading = true;
+                            if (_formkey.currentState!.validate()) {
+                              isLoading = true;
+
                             setState(() {});
+                              Duration waitTime = Duration(seconds: 4);
+                              Future.delayed(waitTime, (){
+                                isLoading = false;
+                                setState(() {});
+                              });
                             try {
                               await FirebaseAuth.instance.signInWithEmailAndPassword(
                                   email: _emailTextController.text,
@@ -118,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) => HomePage()));
                                 print('signed in');
+                                print(data.fullname.toString());
                               }).onError((error, stackTrace) {
                                 print('error ${error.toString()}');
                               });
@@ -125,10 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                               print(e);
                               print(s);
                             }
-                            Future.delayed(Duration(seconds: 5)).then((value){
-                              isLoading = false;
-                              setState(() {
-                              });});
+
                             }
                           },
                           child: isLoading == false ? MyText(

@@ -20,6 +20,7 @@ class movieDetailScreen extends StatefulWidget {
      this.imageUrl
      );
 
+
   @override
   State<movieDetailScreen> createState() => _movieDetailScreenState();
 }
@@ -50,32 +51,83 @@ class _movieDetailScreenState extends State<movieDetailScreen> {
 
             InkWell(
               child: PopupMenuButton(
+                color: mainBlue,
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                      child: MyButton(
-                        color: mainred,
-                        onTap: () async {
-                          try {
-                            await data.movie.doc(widget.title)
-                                .delete()
-                                .then((value) {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (ctx) => HomePage()));
-                            });
-                          } catch (e, s) {
-                            print(e);
-                            print(s);
-                          }
-                        },
-                        child: MyText(
-                          'Delete',
-                          color: white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                    child: Expanded(
+                      child: AlertDialog(
+                          title: MyText(
+                            'Delete ?',
+                            color: mainred,
+                            fontSize: 20,
+                          ),
+                          content: MyText(
+                            'Do you want to delete this movie?',
+                            color: white,
+                            fontSize: 14,
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              onPressed:  ()async {
+                                try {
+                                  await data.movie.doc(widget.title)
+                                      .delete()
+                                      .then((value) {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (ctx) => HomePage()));
+                                  });
+                                } catch (e, s) {
+                                print(e);
+                                print(s);
+                                }
+                              },
+                              child: MyText(
+                                'Yes',
+                                color: white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            ElevatedButton(
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                },
+                                child:  MyText(
+                                  'No',
+                                  color: white,
+                                  fontSize: 14,
+                                ),
+                            )
+                          ],
+                          backgroundColor: mainBlue,
                         ),
-                      )
-                  ),
+                    ),
+                      ),
+                      // PopupMenuItem(
+                      //     child: MyButton(
+                      //       color: mainred,
+                      //       onTap: () async {
+                      //         try {
+                      //           await data.movie.doc(widget.title)
+                      //               .delete()
+                      //               .then((value) {
+                      //             Navigator.of(context).push(
+                      //                 MaterialPageRoute(
+                      //                     builder: (ctx) => HomePage()));
+                      //           });
+                      //         } catch (e, s) {
+                      //           print(e);
+                      //           print(s);
+                      //         }
+                      //       },
+                      //       child: MyText(
+                      //         'Delete',
+                      //         color: white,
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.w500,
+                      //       ),
+                      //     )
+                      // ),
                 ],
               ),
             )
