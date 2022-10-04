@@ -1,16 +1,28 @@
 # cinema_app
 
-A new Flutter project.
+Grazac Project
+Project Brief You’ve been hired to work as a freelancer and build a mobile app for OOPL Cinema Admin Team.
 
-## Getting Started
+To be specific, we want the following features
 
-This project is a starting point for a Flutter application.
+1. Admin can log in (Email and Password) 
+2. New Admin registration (Email, First Name, Last Name and Password) 
+3. Admin should be able to post new movies (Title and description should be in Movie object) 
+4. To edit information about existing movies  
+5. Admin should be able to view all movies 
+6. Admin should be able to remove movies
 
-A few resources to get you started if this is your first Flutter project:
+NOTE: Use Firebase for Auth and Data persistence 
+and remember you have to design the user interface with your discretion  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+This project creates an app for OOPL Cinemas admin users to store the name of movies, along with their
+description and images.
+Firebase is used to do the authentication of the users who want to register and sign in.
+The sign in method is via email and password on firebase.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The admin can add movies by sending the name of the movie and the movie description to firestore 
+and store the image on the storage of firestore while simulataneouly storing the url download link
+on firestore too.
+You can edit the description of the movie and also delete movies from the current list.
+The project also uses Provider to manage the state of the app.
+ 

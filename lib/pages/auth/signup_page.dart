@@ -73,8 +73,6 @@ class _SignUpState extends State<SignUp> {
 
     return null;
   }
-
-
   @override
   Widget build(BuildContext context) {
     // var data = Provider.of<Counterfile>(context);
