@@ -141,15 +141,29 @@ class _movieDetailScreenState extends State<movieDetailScreen> {
           child: Column(
             children: [
               Container(
-                height: 400,
+                height: 300,
                 width: double.infinity,
                 child: Image.network(widget.imageUrl,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
 
               SizedBox(
-                height: 40,
+                height: 20,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                width: double.infinity,
+                child: MyText(widget.description,
+                  fontSize: 22,
+                  textAlign: TextAlign.start,
+                  color: Colors.blueAccent,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+
+              SizedBox(
+                height: 20,
               ),
               TextFormField(
                 textAlign: TextAlign.start,
@@ -163,7 +177,7 @@ class _movieDetailScreenState extends State<movieDetailScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: white,
-                  hintText: widget.description,
+                  hintText: 'Update Movie Description',
                   hintStyle: TextStyle(
                       color: Colors.grey.withOpacity(.75),
                       fontSize: 20,

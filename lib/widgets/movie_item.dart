@@ -27,7 +27,6 @@ class movieItem extends StatelessWidget {
             padding: EdgeInsets.all(5),
             width: double.infinity,
             height: 300,
-
             child: GestureDetector(
               onTap: (){
                 Navigator.of(context).push(
@@ -41,7 +40,6 @@ class movieItem extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-
             child:  MyText(title,
               textAlign: TextAlign.center,
               fontSize: 30,
@@ -52,21 +50,12 @@ class movieItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(10),
             width: double.infinity,
-            child: Row(
-              children: [
-                MyText(getFirstWordsFast(description, " ", 4),
-                  fontSize: 22,
-                  textAlign: TextAlign.start,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.w400,
+            child: MyText(addDot(getFirstWordsFast(description, " ", 8)),
+              fontSize: 22,
+              textAlign: TextAlign.start,
+              color: Colors.blueAccent,
+              fontWeight: FontWeight.w400,
           ),
-                MyText(' ...',
-                  fontSize: 27,
-                  textAlign: TextAlign.start,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.w400,),
-              ],
-            ),
           ),
         ],
       ),
@@ -79,7 +68,6 @@ String getFirstWordsFast(String description, String wordSeparator, int findCount
   if (findCount < 1) {
     return '';
   }
-
   Runes spaceRunes = Runes(wordSeparator);
   Runes sentenceRunes = Runes(description);
   String finalString = "";
@@ -93,9 +81,13 @@ String getFirstWordsFast(String description, String wordSeparator, int findCount
     }
     finalString += String.fromCharCode(letter);
   }
-  return finalString;
+  return '${finalString} ...';
 }
 
+String addDot (String str) {
+  str = '$str ...';
+  return str;
+}
 // ListTile(
 // leading: Container(
 // width: 100,
