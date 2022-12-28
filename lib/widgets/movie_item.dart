@@ -15,7 +15,7 @@ class movieItem extends StatelessWidget {
   {required this.title,
       required this.description,
       required this.imageUrl,}
-      ){}
+      );
 
   @override
   Widget build(BuildContext context) {

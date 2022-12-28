@@ -7,7 +7,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Counterfile extends ChangeNotifier{
+class CounterFile extends ChangeNotifier{
   final user = FirebaseAuth.instance.currentUser;
 
   final CollectionReference _movie =
@@ -30,7 +30,7 @@ class Counterfile extends ChangeNotifier{
   //
   Future<void>sharedPreferences() async {
     final storage = await SharedPreferences.getInstance();
-    fullname = await storage.getString('fullname');
+    fullname = storage.getString('fullname');
     notifyListeners();
   }
 

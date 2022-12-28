@@ -1,6 +1,7 @@
 
 
 import 'package:cinema_app/provider.dart';
+import 'package:cinema_app/utils/app_color.dart';
 import 'package:cinema_app/widgets/movie_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -20,8 +21,7 @@ class _firebase1State extends State<firebase1> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<Counterfile>(context);
-
+    var data = Provider.of<CounterFile>(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -30,7 +30,7 @@ class _firebase1State extends State<firebase1> {
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> streamsnapshot) {
               if (!streamsnapshot.hasData && streamsnapshot.hasError) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(color: mainBlue,));
               }
               else {
                 final datavalue = streamsnapshot.data!.docs.toList();
@@ -39,7 +39,7 @@ class _firebase1State extends State<firebase1> {
                 return ListView.separated(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(2),
                   itemCount: datavalue.length,
                   itemBuilder: (BuildContext context, int index) {

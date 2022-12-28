@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return  MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Counterfile()),
+        ChangeNotifierProvider(create: (_) => CounterFile()),
       ],
       child: MaterialApp(
         home: splashScreeen(),

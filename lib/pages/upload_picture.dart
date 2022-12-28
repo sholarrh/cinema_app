@@ -29,7 +29,7 @@ class _upLoadImageState extends State<upLoadImage> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<Counterfile>(context);
+    var data = Provider.of<CounterFile>(context);
     final fileName = data.file != null ? basename(data.file!.path) : 'No File Selected';
 
     return Scaffold(

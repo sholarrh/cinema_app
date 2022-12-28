@@ -31,7 +31,7 @@ class _movieDetailScreenState extends State<movieDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<Counterfile>(context);
+    var data = Provider.of<CounterFile>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,

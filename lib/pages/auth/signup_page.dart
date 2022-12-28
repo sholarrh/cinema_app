@@ -1,16 +1,16 @@
 import 'package:cinema_app/utils/app_color.dart';
 import 'package:cinema_app/widgets/my_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../provider.dart';
+//import '../../provider.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/reusuable_text_form_field.dart';
-
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -20,14 +20,15 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String? fullname;
+  String? fullName;
 
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _fullnameTextController = TextEditingController();
-  final TextEditingController _confirmPasswordTextController = TextEditingController();
+  final TextEditingController _confirmPasswordTextController =
+      TextEditingController();
 
   String? validatePassword(String? formPassword) {
     if (formPassword == null || formPassword.isEmpty) {
@@ -48,8 +49,9 @@ class _SignUpState extends State<SignUp> {
   }
 
   String? validateEmail(String? formEmail) {
-    if (formEmail == null || formEmail.isEmpty)
+    if (formEmail == null || formEmail.isEmpty) {
       return 'E-mail address is required.';
+    }
 
     String pattern = r'\w+@\w+\.\w+';
     RegExp regex = RegExp(pattern);
@@ -73,6 +75,17 @@ class _SignUpState extends State<SignUp> {
 
     return null;
   }
+
+ @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailTextController.clear();
+    _passwordTextController.clear();
+    _fullnameTextController.clear();
+    _confirmPasswordTextController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     // var data = Provider.of<Counterfile>(context);
@@ -84,35 +97,40 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.only(left: 18, right: 18),
             child: Column(
               children: [
-                SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(Icons.arrow_back,
-                      color: white,)),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: white,
+                      )),
                 ),
-                SizedBox(height: 70,),
-                 Align(
-                   alignment: Alignment.topLeft,
-                   child: MyText(
-                     'Sign Up',
-                       textAlign: TextAlign.start,
-                       fontWeight: FontWeight.w700,
-                       fontSize: 24,
-                       color: white,
-                   ),
-                 ),
+                const SizedBox(
+                  height: 70,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: MyText(
+                    'Sign Up',
+                    textAlign: TextAlign.start,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                    color: white,
+                  ),
+                ),
                 const SizedBox(
                   height: 40,
                 ),
-
                 Form(
-                  key: _formkey,
+                  key: _formKey,
                   child: Column(
-                    children:  [
+                    children: [
                       InputField(
                         inputController: _fullnameTextController,
                         isPassword: false,
@@ -122,10 +140,9 @@ class _SignUpState extends State<SignUp> {
                         prefixIcon: const Icon(Icons.person_outline),
                         validator: validateFullName,
                       ),
-
                       const SizedBox(
-                    height: 40,),
-
+                        height: 40,
+                      ),
                       InputField(
                         inputController: _emailTextController,
                         isPassword: false,
@@ -135,10 +152,9 @@ class _SignUpState extends State<SignUp> {
                         prefixIcon: const Icon(Icons.email_outlined),
                         validator: validateEmail,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
-
                       InputField(
                         inputController: _passwordTextController,
                         isPassword: true,
@@ -149,9 +165,8 @@ class _SignUpState extends State<SignUp> {
                         validator: validatePassword,
                       ),
                       const SizedBox(
-                      height: 40,
+                        height: 40,
                       ),
-
                       InputField(
                         inputController: _confirmPasswordTextController,
                         isPassword: true,
@@ -170,50 +185,63 @@ class _SignUpState extends State<SignUp> {
                 Padding(
                   padding: const EdgeInsets.only(top: 80),
                   child: MyButton(
-                    height: 50,
+                      height: 50,
                       color: mainred,
-                    child: isLoading == false ? MyText('Sign Up',
-                      color: white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-                    ):  Center(
-                      child: CircularProgressIndicator(
-                        color: mainBlue,
-                      ),
-                    ),
-                      onTap:  () async {
-                        if (_formkey.currentState!.validate()){
-                    isLoading = true;
-                    setState(() {
-                    });
-                    final storage = await SharedPreferences.getInstance();
-                    await storage.setString('fullname', _fullnameTextController.text);
-                    setState(() {
-                    });
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        isLoading = true;
+                        setState(() {});
 
-                    Duration waitTime = Duration(seconds: 2);
-                    Future.delayed(waitTime, (){
-                      isLoading = false;
-                      setState(() {});
-                    });
-                   try {
-                     await FirebaseAuth.instance
-                         .createUserWithEmailAndPassword(
-                         email: _emailTextController.text,
-                         password: _passwordTextController.text)
-                         .then((value) {
-                       isLoading = false;
-                       setState(() {
-                         isLoading = false;
-                       });
-                       Navigator.pop(context);
-                     });
-                   }catch (e, s) {
-                     print(e);
-                     print(s);
-                   }
+                        final storage = await SharedPreferences.getInstance();
+                        await storage.setString(
+                            'fullname', _fullnameTextController.text);
+                        setState(() {});
+
+                        Duration waitTime = const Duration(seconds: 2);
+                        Future.delayed(waitTime, () {
+                          isLoading = false;
+                          setState(() {});
+                        });
+
+                        try {
+                          await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                              email: _emailTextController.text,
+                              password: _passwordTextController.text)
+                              .then((value) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            Navigator.pop(context);
+                          }).onError((error, stackTrace) {
+                            var snackBar = SnackBar(content: MyText('error ${error.toString()}'),);
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          });
+                        } catch (e, s) {
+                          if (kDebugMode) {
+                            print(e);
+                          }
+                          if (kDebugMode) {
+                            print(s);
+                          }
                         }
-                  }),
+                      }
+                    },
+                      child: isLoading == false
+                          ? MyText(
+                              'Sign Up',
+                              color: white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                            )
+                          : const Center(
+                              child: RepaintBoundary(
+                                child: CircularProgressIndicator(
+                                  color: mainBlue,
+                                ),
+                              ),
+                            ),
+                      ),
                 ),
               ],
             ),

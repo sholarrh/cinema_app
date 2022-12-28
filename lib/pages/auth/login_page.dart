@@ -20,16 +20,17 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
 
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
 
   String? validateEmail(String? formEmail) {
-    if (formEmail == null || formEmail.isEmpty)
+    if (formEmail == null || formEmail.isEmpty) {
       return 'E-mail address is required.';
+    }
 
     String pattern = r'\w+@\w+\.\w+';
     RegExp regex = RegExp(pattern);
@@ -38,8 +39,9 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
   String? validatePassword(String? formPassword) {
-    if (formPassword == null || formPassword.isEmpty)
+    if (formPassword == null || formPassword.isEmpty) {
       return 'Password is required.';
+    }
 
     return null;
   }
@@ -49,14 +51,14 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero).then((value) {
-      var data = Provider.of<Counterfile>(context, listen: false);
+      var data = Provider.of<CounterFile>(context, listen: false);
       data.sharedPreferences();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   var data = Provider.of<Counterfile>(context);
+   var data = Provider.of<CounterFile>(context);
     return Scaffold(
       backgroundColor: Colors.black26,
       body:  SingleChildScrollView(
@@ -66,8 +68,8 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 70),
+                const Padding(
+                  padding: EdgeInsets.only(top: 70),
                   child:
                   Image(image: AssetImage('assets/images/OOPL-Cinemas-logo-white-website-logo-web.png')),
                 ),
@@ -86,11 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 Form(
-                  key: _formkey,
+                  key: _formKey,
 
                   child: Column(
                     children: [
-                      SizedBox(height: 40,),
+                      const SizedBox(height: 40,),
 
                       InputField(
                           inputController: _emailTextController,
@@ -98,10 +100,10 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Email Address',
                           hasSuffixIcon: false,
                           keyBoardType: TextInputType.emailAddress,
-                       prefixIcon: Icon(Icons.person_outline),
+                       prefixIcon: const Icon(Icons.person_outline),
                       validator: validateEmail,),
 
-                      SizedBox(height: 40,),
+                      const SizedBox(height: 40,),
 
                       InputField(
                         inputController: _passwordTextController,
@@ -109,20 +111,20 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Password',
                         hasSuffixIcon: true,
                         keyBoardType: TextInputType.text,
-                        prefixIcon: Icon(Icons.lock_outlined),
+                        prefixIcon: const Icon(Icons.lock_outlined),
                         validator: validatePassword,),
 
-                      SizedBox(height: 150,),
+                      const SizedBox(height: 150,),
 
                        MyButton(
                         height: 50,
                         color: mainred,
                           onTap: () async {
-                            if (_formkey.currentState!.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               isLoading = true;
 
                             setState(() {});
-                              Duration waitTime = Duration(seconds: 4);
+                              Duration waitTime = const Duration(seconds: 4);
                               Future.delayed(waitTime, (){
                                 isLoading = false;
                                 setState(() {});
@@ -133,11 +135,10 @@ class _LoginPageState extends State<LoginPage> {
                                   password: _passwordTextController.text).then((value)
                               {
                                 Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => HomePage()));
-                                print('signed in');
-                                print(data.fullname.toString());
+                                    MaterialPageRoute(builder: (context) => const HomePage()));
                               }).onError((error, stackTrace) {
-                                print('error ${error.toString()}');
+                                var snackBar = SnackBar(content: MyText('error ${error.toString()}'),);
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               });
                             }catch(e,s){
                               print(e);
@@ -151,17 +152,19 @@ class _LoginPageState extends State<LoginPage> {
                             color: white,
                             fontWeight: FontWeight.w700,
                             fontSize: 20,)
-                          : Center(
-                            child: CircularProgressIndicator(
-                              color: mainBlue,
+                          : const Center(
+                            child: RepaintBoundary(
+                              child: CircularProgressIndicator(
+                                color: mainBlue,
                     ),
+                            ),
                 ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 60,),
+                  padding: const EdgeInsets.only(top: 60,),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -173,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                       InkWell(
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => SignUp()));
+                              MaterialPageRoute(builder: (context) => const SignUp()));
                         },
 
                         child: MyText('Sign Up',
